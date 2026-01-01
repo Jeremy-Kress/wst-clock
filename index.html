@@ -110,6 +110,7 @@ function updateESTTime() {
           timeZone: 'America/New_York', // Covers EST/EDT automatically
           hour: '2-digit',
           minute: '2-digit',
+          second: '2-digit',
           hour12: true
         };
         const estTime = new Date().toLocaleString('en-US', options);
@@ -123,7 +124,7 @@ function updateESTTime() {
 update();
 updateESTTime();
 setInterval(update, 60000);
-setInterval(updateESTTime, 360000);
+setInterval(updateESTTime, 60);
 </script>
 </body>
 </html>
