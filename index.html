@@ -90,15 +90,27 @@ function getWST() {
   anchor.setDate(anchor.getDate() - daysSinceWednesday);
 
   const elapsedMs = estNow - anchor;
-  const wstHours = (4 + elapsedMs / (7 * 3600000)) % 24;
 
-  const h = Math.floor(wstHours);
-  const m = Math.floor((wstHours - h) * 60);
-  const s = Math.floor(((wstHours - h) * 3600 / 100 ));
+  // Convert EST milliseconds to WST seconds
+  const wstTotalSeconds =
+    (4 * 3600) +
+    elapsedMs / (7 * 1000);
 
-  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
-  //append the return of an if/else statement checking to see if h == 12 has occurred. may have to calibrate this once by adding one to a cloud var and modulusing its value to check if %=0, adjusting 0 to 1 if the am/pm designation fails
+  // Normalize into 0–86400 range
+  const normalizedSeconds =
+    ((wstTotalSeconds % 86400) + 86400) % 86400;
+
+  const hours = Math.floor(normalizedSeconds / 3600);
+  const minutes = Math.floor((normalizedSeconds % 3600) / 60);
+  const seconds = Math.floor(normalizedSeconds % 60);
+
+  return (
+    String(hours).padStart(2, "0") + ":" +
+    String(minutes).padStart(2, "0") + ":" +
+    String(seconds).padStart(2, "0")
+  );
 }
+
 
 function update() {
   document.getElementById("clock").textContent = getWST();
@@ -123,7 +135,7 @@ function updateESTTime() {
 
 update();
 updateESTTime();
-setInterval(update, 60000);
+setInterval(update, 60);
 setInterval(updateESTTime, 60);
 </script>
 </body>
