@@ -137,6 +137,11 @@ update();
 updateESTTime();
 setInterval(update, 60);
 setInterval(updateESTTime, 60);
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+  
 </script>
 </body>
 </html>
